@@ -10,7 +10,7 @@
             </coordonnees>
         </lieu>
         <typeDechet>plastique</typeDechet>
-        <status>pleine</status>
+        <status>vide</status>
     </trashCan>
 
     <trashCan id="2">

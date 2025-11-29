@@ -1,8 +1,72 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-*{
-    font-family: "Ubuntu", sans-serif;
 
+/* Basic global styles (Tailwind removed) */
+* {
+    box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif;
 }
+
+html, body, #__next {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(17,24,39,0.06);
+    padding: 20px;
+}
+
+.btn {
+    display: inline-block;
+    background: #2563eb;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.chip {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #111827;
+    cursor: pointer;
+}
+
+.chip.active { background:#10b981; color:#fff; border-color:#10b981 }
+
+.summary { font-size: 14px; color: #6b7280 }
+
+.input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: box-shadow .15s, border-color .15s;
+}
+.input:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
+    border-color: #2563eb;
+}
+
 body{
     margin:0;
 }.logo img{

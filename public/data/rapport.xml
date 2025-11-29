@@ -19,4 +19,27 @@
             <trashCan id="2" quantite="30"/>
         </dechetsCollecte>
     </rapport>
+    <rapport id="2"> <!-- id: key -->
+        <date>2025-11-29</date>
+        <tournee id="1"/>
+        <employees>
+            <chefTourne/>
+            <ouvriers>
+                <ouvrier id="2">
+                    <nom>nomCT</nom>
+                    <prenom>prenomCT</prenom>
+                    <status>present</status>
+                </ouvrier>
+                <ouvrier id="3">
+                    <nom>user</nom>
+                    <prenom>lastname</prenom>
+                    <status>absent</status>
+                </ouvrier>
+            </ouvriers>
+        </employees>
+        <dechetsCollecte>
+            <trashCan id="1" quantite="5"/>
+        </dechetsCollecte>
+    </rapport>
+
 </rapports>

@@ -3,6 +3,10 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
+import dynamic from 'next/dynamic';
+
+const TrashMapChef = dynamic(() => import('../../gestion_tournees/gestion_ts_collectes/TrashMapChef'), { ssr: false });
+
 export default function ChefDeTournee() {
   const [user, setUser] = useState<any>(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -26,6 +30,7 @@ export default function ChefDeTournee() {
     <div>
       <header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 20px', borderBottom: '1px solid #eee'}}>
         <div style={{fontSize: 20, fontWeight: 700}}>GreenBin</div>
+        <div style={{fontSize: 50, fontWeight: 500}}>Dashboard Chef tournée</div>
         <div>
           <Image src="/profile_pic.png" alt="profile" width={48} height={48} style={{borderRadius: '50%'}} />
         </div>
@@ -55,7 +60,8 @@ export default function ChefDeTournee() {
       )}
 
       <main style={{ padding: 20 }}>
-        <h1>Chef tournée Dashboard</h1>
+        
+        <TrashMapChef/>
       </main>
     </div>
   );
