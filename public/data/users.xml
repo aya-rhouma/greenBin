@@ -1,3 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+           xs:noNamespaceSchemaLocation="greenBin.xsd"> 
+    <user id="1"> <!-- id: key -->
+        <login>jdoe</login> <!-- unique -->
+        <password>password123</password> <!-- min length: 8 characters -->
+        <nom>Doe</nom>
+        <prenom>John</prenom>
+        <role>admin</role>
+    </user> 
+    <user id="2"> <!-- id: key -->
+        <login>user</login> <!-- unique -->
+        <password>12345678</password> <!-- min length: 8 characters -->
+        <nom>user</nom>
+        <prenom>lastname</prenom>
+        <role>chef de tournee</role>
+    </user> 
+    <user id="3"> <!-- id: key -->
+        <login>ouvrier1</login> <!-- unique -->
+        <password>112345678</password> <!-- min length: 8 characters -->
+        <nom>user</nom>
+        <prenom>lastname</prenom>
+        <role>ouvrier</role>
+    </user> 
+    <user id="4"> <!-- id: key -->
+        <login>ouvrier2</login> <!-- unique -->
+        <password>02345678</password> <!-- min length: 8 characters -->
+        <nom>user</nom>
+        <prenom>lastname</prenom>
+        <role>ouvrier</role>
+    </user> 
+</users>
+
+<!--
 <utilisateurs>
     <user>
         <id>1</id>
@@ -17,3 +51,4 @@
         <role>admin</role>
     </user>
 </utilisateurs>
+-->

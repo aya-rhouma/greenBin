@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xc:schema xmlns:xc="http://www.w3.org/2001/XMLSchema">
+    <!-- declaration de type de users -->
+
+    <!-- Password restriction -->
+     <xc:simpleType name="TypePassword">
+        <xc:restriction base="xc:string">
+            <xc:minLength value="8"/>
+        </xc:restriction>
+    </xc:simpleType>
+
+    <!-- Definition des roles -->
+     <xc:simpleType name="TypeRole">
+        <xc:restriction base="xc:string">
+            <xc:enumeration value="admin"/>
+            <xc:enumeration value="responsable municipalite"/>
+            <xc:enumeration value="responsable service de voirie"/>
+            <xc:enumeration value="responsable service d'environnement"/>
+            <xc:enumeration value="chef de tournee"/>
+            <xc:enumeration value="ouvrier"/>
+            <xc:enumeration value="citoyen"/>
+        </xc:restriction>
+     </xc:simpleType>
+
+    <xc:complexType name="TypeUser">
+        <xc:sequence>
+            <xc:element name="login" type="xc:string" minOccurs="1" maxOccurs="1"/>
+            <xc:element name="password" type="TypePassword" minOccurs="1" maxOccurs="1"/>
+            <xc:element name="nom" type="xc:string"/>
+            <xc:element name="prenom" type="xc:string"/>
+            <xc:element name="role" type="TypeRole"/>
+        </xc:sequence>
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+
+    <xc:element name="users">
+        <xc:complexType>
+            <xc:sequence>
+                <xc:element name="user" type="TypeUser" minOccurs="1" maxOccurs="unbounded"/>
+            </xc:sequence>
+        </xc:complexType>
+        <xc:unique name="uniqueUserId">
+            <xc:selector xpath="users/user"/>
+            <xc:field xpath="@id"/>
+        </xc:unique>
+    </xc:element>
+
+    <!-- declaration de type de vehicules -->
+
+    <!-- pattern de matricule -->
+    <xc:simpleType name="TypeMat">
+        <xc:restriction base="xc:string">
+            <xc:pattern value="[0-9]{3}TUN[0-9]{4}"/>
+        </xc:restriction>
+    </xc:simpleType>
+
+    <!-- valeurs possibles de disponibilite -->
+    <xc:simpleType name="TypeDispo">
+        <xc:restriction base="xc:string">
+            <xc:enumeration value="disponible"/>
+            <xc:enumeration value="en service"/>
+        </xc:restriction>
+    </xc:simpleType>
+
+    <!-- element vide chauffeur -->
+    <xc:complexType name="TypeChauffeur">
+        <xc:attribute name="id"/>
+    </xc:complexType>
+
+    <xc:complexType name="TypeVehicule">
+        <xc:sequence>
+            <xc:element name="matricule" type="TypeMat"/>
+            <xc:element name="chauffeur" type="TypeChauffeur"/>
+            <xc:element name="disponibilite" type="TypeDispo"/>
+        </xc:sequence>
+        <xc:attribute name="id" type="xc:string"/>
+    </xc:complexType>
+
+    <xc:element name="vehicules">
+        <xc:complexType>
+            <xc:sequence>
+                <xc:element name="vehicule" type="TypeVehicule" minOccurs="1" maxOccurs="unbounded"/>
+            </xc:sequence>
+        </xc:complexType>
+        <xc:unique name="uniqueVehiculeId">
+            <xc:selector xpath="vehicules/vehicule"/>
+            <xc:field xpath="@id"/>
+        </xc:unique>
+        <xc:keyref name="chauffeurRef" refer="uniqueUserId">
+            <xc:selector xpath="vehicules/vehicule/chauffeur"/>
+            <xc:field xpath="@id"/>
+        </xc:keyref>
+    </xc:element>
+
+    <!-- declaration de type de trashCans -->
+
+    <!-- type coordonnees -->
+     <xc:complexType name="TypeCoord">
+        <xc:sequence>
+            <xc:element name="latitude" type="xc:float"/>
+            <xc:element name="longitude" type="xc:float"/>
+        </xc:sequence>
+     </xc:complexType>
+
+    <!-- type lieu -->
+    <xc:complexType name="TypeLieu">
+        <xc:sequence>
+            <xc:element name="adresse" type="xc:string"/>
+            <xc:element name="coordonnees" type="TypeCoord"/>
+        </xc:sequence>
+    </xc:complexType>
+    
+    <!-- val de type dechets -->
+    <xc:simpleType name="TypeDechets">
+        <xc:restriction base="xc:string">
+            <xc:enumeration value="plastique"/>
+            <xc:enumeration value="verre"/>
+            <xc:enumeration value="papier"/>
+            <xc:enumeration value="autre"/>
+        </xc:restriction>
+    </xc:simpleType>
+
+    <!-- val de type status -->
+    <xc:simpleType name="TypeStatus">
+        <xc:restriction base="xc:string">
+            <xc:enumeration value="vide"/>
+            <xc:enumeration value="moitie"/>
+            <xc:enumeration value="pleine"/>
+        </xc:restriction>
+    </xc:simpleType>
+
+    <xc:complexType name="TypeTrashCan">
+        <xc:sequence>
+            <xc:element name="lieu" type="TypeLieu"/>
+            <xc:element name="typeDechet" type="TypeDechets"/>
+            <xc:element name="status" type="TypeStatus"/>
+        </xc:sequence>
+        <xc:attribute name="id"/>
+    </xc:complexType>
+
+    <xc:element name="trashCans">
+        <xc:complexType>
+            <xc:sequence>
+                <xc:element name="trashCan" type="TypeTrashCan" minOccurs="1" maxOccurs="unbounded"/>
+            </xc:sequence>
+        </xc:complexType>
+        <xc:unique name="uniqueTrashCanId">
+            <xc:selector xpath="trashCans/trashCan"/>
+            <xc:field xpath="@id"/>
+        </xc:unique>
+    </xc:element>
+
+    <!-- declaration de type de tournees -->
+
+    <!-- elements vides (trashCan/ouvrier/vehicule) -->
+     <xc:complexType name="TypeTrashCanTournee">
+        <xc:attribute name="id"/>
+    </xc:complexType>
+
+    <xc:complexType name="TypeOuvrierTournee">
+        <xc:attribute name="id"/>
+    </xc:complexType>
+
+    <xc:complexType name="TypeVehiculeTournee">
+        <xc:attribute name="id"/>
+    </xc:complexType>
+
+    <xc:complexType name="TypeTournee">
+        <xc:sequence>
+            <xc:element name="trashCans">
+                <xc:complexType>
+                    <xc:sequence>
+                        <xc:element name="trashCan" type="TypeTrashCanTournee" minOccurs="1" maxOccurs="unbounded"/>
+                    </xc:sequence>
+                </xc:complexType>
+            </xc:element>
+            <xc:element name="ouvriers" minOccurs="1" maxOccurs="1">
+                <xc:complexType>
+                    <xc:sequence>
+                        <xc:element name="ouvrier" type="TypeOuvrierTournee" minOccurs="1" maxOccurs="unbounded"/>
+                    </xc:sequence>
+                </xc:complexType>
+            </xc:element>
+            <xc:element name="vehicule" type="TypeVehiculeTournee"/>
+            <xc:element name="date" type="xc:date"/>
+        </xc:sequence>
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+
+    <xc:element name="tournees">
+        <xc:complexType>
+            <xc:sequence>
+                <xc:element name="tournee" type="TypeTournee" minOccurs="1" maxOccurs="unbounded"/>
+            </xc:sequence>
+        </xc:complexType>
+        <xc:unique name="uniqueTourneeId">
+            <xc:selector xpath="tournees/tournee"/>
+            <xc:field xpath="@id"/>
+        </xc:unique>
+        <xc:keyref name="ouvrierRef" refer="uniqueUserId">
+            <xc:selector xpath="tournees/tournee/emplyees/employee/ouvrier"/>
+            <xc:field xpath="@id"/>
+        </xc:keyref>
+        <xc:keyref name="tashCanRef" refer="uniqueTrashCanId">
+            <xc:selector xpath="tournees/tournee/trashCans/trashCan"/>
+            <xc:field xpath="@id"/>
+        </xc:keyref>
+    </xc:element>
+
+    <!-- declaration de type de rapports -->
+
+    <xc:complexType name="TypeTourneeRapport">
+        <xc:attribute name="id"/>
+    </xc:complexType>
+    <!-- valeurs de status -->
+     <xc:simpleType name="TypeStatusRapport">
+        <xc:restriction base="xc:string">
+            <xc:enumeration value="present"/>
+            <xc:enumeration value="absent"/>
+        </xc:restriction>
+    </xc:simpleType>
+
+    <xc:complexType name="TypeOuvrierRapport">
+        <xc:sequence>
+            <xc:element name="nom" type="xc:string"/>
+            <xc:element name="prenom" type="xc:string"/>
+            <xc:element name="status" type="TypeStatusRapport"/>
+        </xc:sequence>
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+
+    <xc:complexType name="TypeEmployeesRapport">
+        <xc:sequence>
+            <xc:element name="chefTourne" type="TypeChauffeur"/>
+            <xc:element name="ouvriers">
+                <xc:complexType>
+                    <xc:sequence>
+                        <xc:element name="ouvrier" type="TypeOuvrierRapport" minOccurs="1" maxOccurs="unbounded"/>
+                    </xc:sequence>
+                    <xc:attribute name="id"/>
+                </xc:complexType>
+            </xc:element>
+        </xc:sequence>
+    </xc:complexType>
+
+    <xc:complexType name="TypeTrashCanRapport">
+        <xc:attribute name="id" type="xc:int"/>
+        <xc:attribute name="quantite" type="xc:int"/>
+    </xc:complexType>
+
+    <xc:complexType name="TypeDechetsCollecteRapport">
+        <xc:sequence>
+            <xc:element name="trashCan" type="TypeTrashCanRapport" minOccurs="1" maxOccurs="unbounded"/>
+        </xc:sequence>
+    </xc:complexType>
+
+    <xc:complexType name="TypeRapport">
+        <xc:sequence>
+            <xc:element name="date" type="xc:date"/>
+            <xc:element name="tournee" type="TypeTourneeRapport"/>
+            <xc:element name="employees" type="TypeEmployeesRapport"/>
+            <xc:element name="dechetsCollecte" type="TypeDechetsCollecteRapport" minOccurs="1" maxOccurs="unbounded"/>
+        </xc:sequence>
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+
+    <xc:element name="rapports">
+        <xc:complexType>
+            <xc:sequence>
+                <xc:element name="rapport" type="TypeRapport" minOccurs="1" maxOccurs="unbounded"/>
+            </xc:sequence>
+        </xc:complexType>
+        <xc:unique name="uniqueRapportId">
+            <xc:selector xpath="rapports/rapport"/>
+            <xc:field xpath="@id"/>
+        </xc:unique>
+        <xc:keyref name="ouvrierRapportRef" refer="uniqueUserId">
+            <xc:selector xpath="rapports/rapport/employees/ouvriers/ouvrier"/>
+            <xc:field xpath="@id"/>
+        </xc:keyref>
+        <xc:keyref name="chefTourneeRapportRef" refer="uniqueUserId">
+            <xc:selector xpath="rapports/rapport/employees/chefTournee"/>
+            <xc:field xpath="@id"/>
+        </xc:keyref>
+        <xc:keyref name="trashCanRapportRef" refer="uniqueTrashCanId">
+            <xc:selector xpath="rapports/rapport/dechetsCollecte/trashCan"/>
+            <xc:field xpath="@id"/>
+        </xc:keyref>
+    </xc:element>
+
+    <!-- declaration de type de travails -->
+    <xc:simpleType name="TypeEtatTravail">
+        <xc:restriction base="xc:string">
+            <xc:enumeration value="complet"/>
+            <xc:enumeration value="en cours"/>
+        </xc:restriction>
+    </xc:simpleType>
+
+    <xc:complexType name="TypeTravail">
+        <xc:sequence>
+            <xc:element name="date" type="xc:date"/>
+            <xc:element name="lieu" type="xc:string"/>
+            <xc:element name="etat" type="TypeEtatTravail"/>
+        </xc:sequence>
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+
+    <xc:element name="travaux">
+        <xc:complexType>
+            <xc:sequence>
+                <xc:element name="travail" type="TypeTravail"/>
+            </xc:sequence>
+        </xc:complexType>
+
+        <xc:unique name="uniqueTravailId">
+            <xc:selector xpath="travaux/travail"/>
+            <xc:field xpath="@id"/>
+        </xc:unique>
+    </xc:element>
+
+    <!-- declaration de type de notifications -->
+    <!-- elements vides: chef tournee/travail -->
+    <xc:complexType name="TypeChefTourneeNotif">
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+    <xc:complexType name="TypeTravilNotif">
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+    <xc:complexType name="TypeNotif">
+        <xc:sequence>
+            <xc:element name="chefTournee" type="TypeChefTourneeNotif"/>
+            <xc:element name="travail" type="TypeTravilNotif"/>
+            <xc:element name="contenu" type="xc:string"/>
+        </xc:sequence>
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+
+    <xc:element name="notifications">
+        <xc:complexType>
+            <xc:sequence>
+                <xc:element name="notification" type="TypeNotif"/>
+            </xc:sequence>
+        </xc:complexType>
+        <xc:unique name="uniqueNotifId">
+            <xc:selector xpath="notifications/notification"/>
+            <xc:field xpath="@id"/>
+        </xc:unique>
+    </xc:element>
+
+    <!-- declaration de type de reclamations -->
+    <!-- elements vides: citoyen -->
+    <xc:complexType name="TypeCitoyenRec">
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+    <xc:complexType name="TypeReclamation">
+        <xc:sequence>
+            <xc:element name="citoyen" type="TypeCitoyenRec"/>
+            <xc:element name="contenu" type="xc:string"/>
+        </xc:sequence>
+        <xc:attribute name="id" type="xc:int"/>
+    </xc:complexType>
+
+    <xc:element name="reclamations">
+        <xc:complexType>
+            <xc:sequence>
+                <xc:element name="reclamation" type="TypeReclamation"/>
+            </xc:sequence>
+        </xc:complexType>
+        <xc:unique name="uniqueReclId">
+            <xc:selector xpath="reclamations/reclamation"/>
+            <xc:field xpath="@id"/>
+        </xc:unique>
+    </xc:element>
+
+</xc:schema>
